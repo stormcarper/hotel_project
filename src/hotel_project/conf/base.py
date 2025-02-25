@@ -122,6 +122,7 @@ INSTALLED_APPS = [
     # Project applications.
     "hotel_project.accounts",
     "hotel_project.utils",
+    "hotels",
 ]
 
 MIDDLEWARE = [

@@ -12,18 +12,19 @@
         <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" />
         {% block extra_css %}{% endblock %}
     </head>
-
-    <body class="view__body">
+    <body>
         <main>
             {% block content %}
-            <h1>Hotel website</h1>
+            <h1> upload hotels(json)</h1>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file">
+                <button type="submit">Upload</button>
+            </form>
 
             {% endblock %}
         </main>
-        {% if dsn %}
-            <script src="https://browser.sentry-cdn.com/5.10.1/bundle.min.js" integrity="sha384-sAOze6ZTBIpiWBF3VlUteSInM4rYpjxrejp1wMmmKqA9clRZ1vZJ36Ihmt1ilTrG" crossorigin="anonymous"></script>
-            <script>Sentry.init({ dsn: '{{ dsn }}'});</script>
-        {% endif %}
-        <script src="{% static 'bundles/hotel_project-js.js' %}"></script>
     </body>
+
 </html>

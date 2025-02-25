@@ -1,0 +1,21 @@
+from django import forms
+
+class UploadHotelsFile(forms.Form):
+    title  = forms.CharField(max_length=50)
+    name = forms.CharField(max_length=30)
+    alt = forms.CharField(max_length=30, required=False)
+    address = forms.CharField(max_length=100)
+    directions = forms.CharField(max_length=200)
+    phone = forms.CharField(max_length=15)
+    tollfree = forms.CharField(max_length=20, required=False)
+    fax = forms.CharField(max_length=30)
+    url = forms.URLField()
+    hours = forms.CharField(max_length=5, required=False)
+    checkin = forms.CharField(max_length=5)
+    checkout = forms.CharField(max_length=5)
+    image = forms.CharField(required=False)
+    price = forms.CharField(max_length=10)
+    content = forms.CharField()
+    activity = forms.CharField(max_length=100)
+    type = forms.CharField(max_length=20)
+    availability = forms.BooleanField()
