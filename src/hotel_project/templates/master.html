@@ -9,7 +9,7 @@
         <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
         <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
         <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
-        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" />
+        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" /> <!-- Include the bundled CSS file -->
         {% block extra_css %}{% endblock %}
     </head>
 
@@ -17,7 +17,22 @@
         <main>
             {% block content %}
             <h1>Hotel website</h1>
-
+            <h2>Rooms</h2>
+            <div class="hotel-card-container">
+                {% for hotel in hotels %}
+                <div class="hotel-card" data-hotel-id="{{ hotel.hotel_id }}">
+                    <img src="{{ hotel.image }}" alt="Hotel Image" class="hotel-card__image">
+                    <div class="hotel-card__content">
+                        <h3>{{ hotel.name }}</h3>
+                        <p>{{ hotel.description }}</p>
+                    </div>
+                    <div class="hotel-card__footer">
+                        <span class="hotel-card__footer__price">{{ hotel.price }}</span>
+                        <a href="{% url 'hotel_detail' hotel_id=hotel.hotel_id %}" class="hotel-card__footer__button">Book Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             {% endblock %}
         </main>
         {% if dsn %}

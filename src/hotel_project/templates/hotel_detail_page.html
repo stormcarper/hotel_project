@@ -1,0 +1,71 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="view {% block view_class %}view--{{ request.resolver_match.namespaces|join:'-' }}-{{ request.resolver_match.url_name }}{% endblock %}">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Hotel {{ hotel.title }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'ico/favicon.svg' %}" sizes="any" rel="icon" type="image/svg+xml" />
+        <link href="{% static 'ico/favicon-96x96.png' %}" sizes="96x96" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
+        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" /> <!-- Include the bundled CSS file -->
+        {% block extra_css %}{% endblock %}
+    </head>
+
+    <body class="view__body">
+        <main>
+            {% block content %}
+            <div class="hotel-page__container">
+                <div class="hotel-page__top-section">
+                    <div class="hotel-page__hotel hotel-page__card">
+                        <h1>{{ hotel.title }}</h1>
+                        <img src="{{ hotel.image }}" alt="Hotel Image">
+                        <p>{{ hotel.content }}</p>
+                        <p>
+                            <span class="hotel-page__badge {% if hotel.availability %}hotel-page__badge--available{% else %}hotel-page__badge--unavailable{% endif %}">
+                                Availability: {% if hotel.availability %}Available{% else %}Not Available{% endif %}
+                            </span>
+                        </p>
+                        <p>Address: {{ hotel.address }}</p>
+                    </div>
+
+                    <div class="hotel-page__order hotel-page__card">
+                        <h2>Order</h2>
+                        <select class="hotel-page__input">
+                            <option value="" disabled selected>Choose here</option>
+                            {% for room in hotel.rooms %}
+                            <option value="{{ room.price }}" {% if not room.availability %}disabled{% endif %}>
+                                {{ room.room_type }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <p class="hotel-page__room__price">Select a room to see the price</p>
+                        <button class="hotel-page__button hotel-page__button--primary" disabled>Order</button>
+                    </div>
+                </div>
+
+                <div class="hotel-page__rooms-section hotel-page__card">
+                    <h2>Rooms</h2>
+                    {% for room in hotel.rooms %}
+                    <div class="hotel-page__room">
+                        <h3>{{ room.room_type }}</h3>
+                        <p>Price: {{ room.price }}</p>
+                        <p>
+                            <span class="hotel-page__badge {% if room.availability %}hotel-page__badge--available{% else %}hotel-page__badge--unavailable{% endif %}">
+                                Availability: {% if room.availability %}Available{% else %}Not Available{% endif %}
+                            </span>
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endblock %}
+        </main>
+        {% if dsn %}
+            <script src="https://browser.sentry-cdn.com/5.10.1/bundle.min.js" integrity="sha384-sAOze6ZTBIpiWBF3VlUteSInM4rYpjxrejp1wMmmKqA9clRZ1vZJ36Ihmt1ilTrG" crossorigin="anonymous"></script>
+            <script>Sentry.init({ dsn: '{{ dsn }}'});</script>
+        {% endif %}
+        <script src="{% static 'bundles/hotel_project-js.js' %}"></script>
+    </body>
+</html>

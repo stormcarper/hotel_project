@@ -1,6 +1,6 @@
 from django import forms
 
-class UploadHotelsFile(forms.Form):
+class UploadHotel(forms.Form):
     title  = forms.CharField(max_length=50)
     name = forms.CharField(max_length=30)
     alt = forms.CharField(max_length=30, required=False)
@@ -8,6 +8,7 @@ class UploadHotelsFile(forms.Form):
     directions = forms.CharField(max_length=200)
     phone = forms.CharField(max_length=15)
     tollfree = forms.CharField(max_length=20, required=False)
+    email = forms.EmailField()
     fax = forms.CharField(max_length=30)
     url = forms.URLField()
     hours = forms.CharField(max_length=5, required=False)

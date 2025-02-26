@@ -16,7 +16,7 @@ class Hotels(models.Model):
     hours = models.CharField(max_length=5, blank=True, null=True)
     checkin = models.CharField(max_length=5, blank=True, null=True)
     checkout = models.CharField(max_length=5, blank=True, null=True)
-    image = models.CharField(max_length=255, blank=True, null=True)
+    image = models.TextField(blank=True, null=True)
     price = models.CharField(max_length=25, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     activity = models.CharField(max_length=100, default='default_activity')
