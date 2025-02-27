@@ -34,7 +34,7 @@
                         <h2>Order</h2>
                         <select class="hotel-page__input">
                             <option value="" disabled selected>Choose here</option>
-                            {% for room in hotel.rooms %}
+                            {% for room in hotel.rooms.all %}
                             <option value="{{ room.price }}" {% if not room.availability %}disabled{% endif %}>
                                 {{ room.room_type }}
                             </option>
@@ -47,7 +47,7 @@
 
                 <div class="hotel-page__rooms-section hotel-page__card">
                     <h2>Rooms</h2>
-                    {% for room in hotel.rooms %}
+                    {% for room in hotel.rooms.all %}
                     <div class="hotel-page__room">
                         <h3>{{ room.room_type }}</h3>
                         <p>Price: {{ room.price }}</p>

@@ -33,7 +33,7 @@
                             </span>
                         </div>
                         <span class="hotel-card__footer__price">{{ hotel.price }}</span>
-                        <a href="{% url 'hotel_detail' hotel_id=hotel.hotel_id %}" class="hotel-card__footer__button">Book Now</a>
+                        <a href="{% url 'hotel_detail' pk=hotel.hotel_id %}" class="hotel-card__footer__button">Book Now</a>
                     </div>
                 </div>
                 {% endfor %}

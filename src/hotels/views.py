@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Hotels, Geo, Rooms
 import json
 
@@ -74,7 +74,20 @@ class HotelsListView(ListView):
 
         context['hotels'] = hotels
         return context
+    
+class HotelDetailView(DetailView):
+    model = Hotels
+    template_name = 'hotel_detail_page.html'
+    context_object_name = 'hotel'
 
+    def get_context_data(self, **kwargs):
+        context = super(HotelDetailView, self).get_context_data(**kwargs)
+        hotel = self.get_object()
+        geo_data = Geo.objects.filter(hotel=hotel.hotel_id).all()
+        context['geo'] = geo_data
+        rooms = Rooms.objects.filter(hotel=hotel.hotel_id).all()
+        context['rooms'] = rooms
+        return context
 
 def clear_hotels(request):
     Hotels.objects.all().delete()
