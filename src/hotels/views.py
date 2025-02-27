@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Hotels, Geo, Rooms
 import json
 
@@ -64,13 +65,7 @@ class HotelsListView(ListView):
         paginator = Paginator(hotels, self.paginate_by)
 
         page = self.request.GET.get('page')
-
-        try:
-            hotels = paginator.page(page)
-        except PageNotAnInteger:
-            hotels = paginator.page(1)
-        except EmptyPage:
-            hotels = paginator.page(paginator.num_pages)
+        hotels = paginator.get_page(page)
 
         context['hotels'] = hotels
         return context

@@ -7,5 +7,4 @@ urlpatterns = [
     # path('get/', get_data, name='get_data'),
     path('clear/', clear_hotels, name='clear_hotels'),
     path('hotel/<int:pk>/', HotelDetailView.as_view(), name='hotel_detail'),
-
 ]
