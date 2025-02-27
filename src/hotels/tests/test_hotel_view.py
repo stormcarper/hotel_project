@@ -36,6 +36,12 @@ class HotelViewTest(TestCase):
             price=100,
             availability=False
         )
+        Rooms.objects.create(
+            hotel=hotel1,
+            room_type='room2',
+            price=150,
+            availability=True
+        )
 
         hotel2 = Hotels.objects.create(
             title='Title2',
@@ -91,3 +97,42 @@ class HotelViewTest(TestCase):
     def test_hotels_list_view_not_integer(self):
         response = self.client.get('/?page=string')
         self.assertEqual(response.status_code, 404)
+
+    # test hotel detail view
+    def test_hotel_detail_view(self):
+        hotel1 = Hotels.objects.get(title='Title1')
+        response = self.client.get(f'/hotel/{hotel1.hotel_id}/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'hotel_detail_page.html')
+        self.assertContains(response, 'Title1')
+        self.assertContains(response, 'image1')
+        self.assertContains(response, 'content1')
+        self.assertContains(response, 'address1')
+        self.assertContains(response, 'room1')
+        self.assertContains(response, 'room2')
+        self.assertContains(response, 100)
+        self.assertContains(response, 150)
+        self.assertContains(response, 'Not Available')
+        self.assertContains(response, 'Available')
+
+    def test_hotel_detail_view_wrong_id(self):
+        response = self.client.get('/hotel/3/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_hotel_detail_view_not_integer(self):
+        response = self.client.get('/hotel/string/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_hotel_detail_view_rooms(self):
+        hotel2 = Hotels.objects.get(title='Title2')
+        response = self.client.get(f'/hotel/{hotel2.hotel_id}/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'hotel_detail_page.html')
+        self.assertContains(response, 'room2')
+        self.assertContains(response, 200)
+        self.assertContains(response, 'Not Available')
+
+    
+
+    
+
