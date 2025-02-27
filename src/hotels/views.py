@@ -1,6 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView
 from .models import Hotels, Geo, Rooms
 import json
 
@@ -50,9 +52,28 @@ def upload_hotels(request):
     else:
         return HttpResponse(status=405)
 
-def get_data(request):
-    hotels = Hotels.objects.all()
-    return render(request, 'master.html', {'hotels': hotels})
+class HotelsListView(ListView):
+    paginate_by = 12
+    model = Hotels
+    template_name = 'master.html'
+    context_object_name = 'hotels'
+
+    def get_context_data(self, **kwargs):
+        context = super(HotelsListView, self).get_context_data(**kwargs)
+        hotels = Hotels.objects.all()
+        paginator = Paginator(hotels, self.paginate_by)
+
+        page = self.request.GET.get('page')
+
+        try:
+            hotels = paginator.page(page)
+        except PageNotAnInteger:
+            hotels = paginator.page(1)
+        except EmptyPage:
+            hotels = paginator.page(paginator.num_pages)
+
+        context['hotels'] = hotels
+        return context
 
 
 def clear_hotels(request):

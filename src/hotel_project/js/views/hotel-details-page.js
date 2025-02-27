@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             //update the price on the page
             document.querySelector('.hotel-page__room__price').textContent = selectedRoomPrice;
             
-            // Enable book button when a room is selected
+            // Enable book button when a room is selected and disable it when no room is selected
             const bookButton = document.querySelector('.hotel-page__button.hotel-page__button--primary');
             if (selectedRoomPrice && selectedRoomPrice !== '0') {
                 bookButton.disabled = false;
