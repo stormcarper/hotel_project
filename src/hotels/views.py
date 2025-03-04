@@ -70,11 +70,40 @@ class ReservationFormView(CreateView):
     def form_valid(self, form):
         form.save()
         try:
+            hotel_object = form.cleaned_data['hotel']
+            hotel_name = hotel_object.name
+            room_object = form.cleaned_data['room']
+            room_type = room_object.room_type
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            price = form.cleaned_data['price']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            
+            # Create personalized email message
+            email_subject = f"Reservation Confirmation - {hotel_name}"
+            email_message = f"""
+                Dear {first_name} {last_name},
+
+                Thank you for your reservation at {hotel_name}!
+
+                Reservation Details:
+                - Room Type: {room_type}
+                - Check-in Date: {start_date}
+                - Check-out Date: {end_date}
+                - Total Price: ${price}
+
+                Your reservation has been confirmed and we look forward to welcoming you. If you need to make any changes to your reservation, please contact us directly.
+
+                Best regards,
+                The {hotel_name} Team
+            """
             send_mail (
-                'Reservation Confirmation',
-                'Thank you for your reservation!',
+                email_subject,
+                email_message,
                 'storm@maykinmedia.nl',
-                ['stormcarper@gmail.com'],
+                [email],
                 fail_silently=False
             )
             print('Email sent')
