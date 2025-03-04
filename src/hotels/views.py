@@ -1,10 +1,11 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.admin.views.decorators import staff_member_required
+from django.template.loader import render_to_string
+from django.template.loader import get_template
+from django.template import Context
 from django.conf import settings
 from .models import Hotel, Geo, Room
 from .forms import ReservationForm
@@ -83,41 +84,61 @@ class ReservationFormView(CreateView):
             
             # Create personalized email message
             email_subject = f"Reservation Confirmation - {hotel_name}"
-            email_message = f"""
-                Dear {first_name} {last_name},
 
-                Thank you for your reservation at {hotel_name}!
-
-                Reservation Details:
-                - Room Type: {room_type}
-                - Check-in Date: {start_date}
-                - Check-out Date: {end_date}
-                - Total Price: ${price}
-
-                Your reservation has been confirmed and we look forward to welcoming you. If you need to make any changes to your reservation, please contact us directly.
-
-                Best regards,
-                The {hotel_name} Team
-            """
-            send_mail (
-                email_subject,
-                email_message,
-                'storm@maykinmedia.nl',
-                [email],
-                fail_silently=False
+            text_content = render_to_string(
+                "emails/reservation_confirmation.txt",
+                context = {
+                    "hotel_name": hotel_name,
+                    "room_type": room_type,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "price": price,
+                    "first_name": first_name,
+                    "last_name": last_name
+                }
             )
-            print('Email sent')
-        except:
+
+            html_content = render_to_string(
+                "emails/reservation_confirmation.html",
+                context = {
+                    "hotel_name": hotel_name,
+                    "room_type": room_type,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "price": price,
+                    "first_name": first_name,
+                    "last_name": last_name
+                }
+            )
+
+            send_mail(
+                email_subject,
+                text_content,
+                settings.EMAIL_HOST_USER,
+                [email],
+                html_message=html_content
+            )
+
+        except Exception as e:
+            print(f'Error sending email: {str(e)}')
             return HttpResponse(status=500)
         return HttpResponse(status=201)
     
-def get_rooms_and_hotel(request, pk):
+def get_rooms_and_hotel(request, pk, Rpk):
     if Hotel.objects.filter(hotel_id=pk).count() == 0:
         return JsonResponse({"error": "Hotel not found"}, status=404)
     hotel = Hotel.objects.get(hotel_id=pk)
-    rooms = Room.objects.filter(hotel=hotel).all()
-    rooms = rooms.filter(availability=True)
-    return render(request, 'reservation_date.html', {'hotel': hotel, 'rooms': rooms})
+    room = Room.objects.filter(room_id=Rpk).first()
+    # check if room exists
+    if not room:
+        return render(request, '404.html', {'error_message': 'Room not found'})
+    # check if room is available
+    if room.availability == False:
+        return render(request, '404.html', {'error_message': 'Room not available'})
+    # check if room belongs to the hotel
+    if room.hotel.hotel_id != pk:
+        return render(request, '404.html', {'error_message': 'Room does not belong to the hotel'})
+    return render(request, 'reservation_date.html', {'hotel': hotel, 'room': room})
 
 def get_hotel_and_room(request, Hpk, Rpk):
     if Hotel.objects.filter(hotel_id=Hpk).count() == 0:

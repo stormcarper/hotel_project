@@ -35,13 +35,14 @@
                         <select class="hotel-page__input">
                             <option value="" disabled selected>Choose here</option>
                             {% for room in hotel.rooms.all %}
-                            <option value="{{ room.price }}" {% if not room.availability %}disabled{% endif %}>
+                            <option value="{{ room.price }}" room_id="{{ room.room_id }}" {% if not room.availability %}disabled{% endif %}>
                                 {{ room.room_type }}
                             </option>
                             {% endfor %}
                         </select>
                         <p class="hotel-page__room__price">Select a room to see the price</p>
-                        <a href="{% url 'reservation_date' pk=hotel.hotel_id %}" class="hotel-page__button hotel-page__button--primary">Order</a>
+                        <p class="hotel-page__alert" style="display:none;"></p>
+                        <button id="hotel-page__button" class="hotel-page__button hotel-page__button--primary">Order</button>
                     </div>
                 </div>
 

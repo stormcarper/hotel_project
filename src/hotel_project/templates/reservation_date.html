@@ -20,16 +20,9 @@
                 <h1 class="reservation__title">Book your stay at {{ hotel.name }}</h1>
                 
                 <div class="reservation__room-select">
-                    <label for="room">Select a Room</label>
-                    <select name="room" id="room" class="reservation__select">
-                        <option value="" disabled selected>Choose a room</option>
-                        {% for room in hotel.rooms.all %}
-                        {% if room.availability %}
-                            <option value="{{ room.room_id }}" price="{{ room.price }}">{{ room.room_type }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                    <span id="reservation__room-price" class="room-price">Select a room to see the price! </span>
+                    <h2>selected Room:</h2>
+                    <h3 id="reservation__room-type" class="room-type">{{ room.room_type }}</h3>
+                    <span id="reservation__room-price" class="room-price">{{ room.price }}</span>
                 </div>
                 
                 <div class="reservation__date-inputs">

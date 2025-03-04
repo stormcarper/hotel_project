@@ -1,0 +1,14 @@
+Dear {first_name} {last_name},
+
+Thank you for your reservation at {hotel_name}!
+
+Reservation Details:
+- Room Type: {room_type}
+- Check-in Date: {start_date}
+- Check-out Date: {end_date}
+- Total Price: ${price}
+
+Your reservation has been confirmed and we look forward to welcoming you. If you need to make any changes to your reservation, please contact us directly.
+
+Best regards,
+The {hotel_name} Team

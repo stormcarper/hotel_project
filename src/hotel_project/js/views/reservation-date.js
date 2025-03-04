@@ -1,29 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Check if the current page is the reservation date page
     if (this.location.pathname.includes('reservation/date')) {
-
-        // Get the price of the selected room
-        let roomSelect = document.querySelector(".reservation__select");
-        let price = roomSelect.options[roomSelect.selectedIndex].getAttribute('price');
-        
-        // Display the price of the selected room
-        if (price) {
-            document.getElementById('reservation__room-price').innerText = "the price of the room is: " + price;
-        }
-
-        // check the select for changes and change the price accordingly
-        document.querySelector(".reservation__select").addEventListener('change', function () {
-            let roomSelect = document.querySelector(".reservation__select");
-            let price = roomSelect.options[roomSelect.selectedIndex].getAttribute('price');
-            document.getElementById('reservation__room-price').innerText = "the price of the room is: " + price;
-
-        })
+        // get the room_id form the url
+        const room = this.location.pathname.split('/')[4];
 
         // add an click event listener on the submit button
         document.getElementById('submit_date').addEventListener('click', function () {
-            // select the room, check-in and check-out date
-            let roomSelect = document.getElementById('room');
-            let room = roomSelect.value;
+            // select the check-in and check-out date
             let checkIn = document.getElementById('start_date').value;
             let checkOut = document.getElementById('end_date').value;
 
