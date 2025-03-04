@@ -1,3 +1,4 @@
+/* Hotel Card */
 .hotel-card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -6,6 +7,7 @@
     max-width: 2000px;
     margin: 0 auto;
 
+    /* Responsive Styling */
     @media (max-width: 1600px) {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
@@ -28,6 +30,7 @@
     }
 }
 
+/* Hotel Card */
 .hotel-card {
     display: flex;
     flex-direction: column;
@@ -95,6 +98,7 @@
         }
     }
 
+    /* hotel card footer*/
     &__footer {
         display: flex;
         flex-wrap: wrap;
@@ -132,13 +136,14 @@
         }
     }
 
+    /* pagination */
     &__pagination {
         display: flex;
         justify-content: center;
         margin-top: 30px;
         padding-top: 20px;
         border-top: 1px solid #f0f0f0;
-        grid-column: 1 / -1; /* Make pagination span all columns */
+        grid-column: 1 / -1;
     }
 
     &__step-links {
@@ -175,7 +180,6 @@
     }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .hotel-card__step-links {
         gap: 5px;
