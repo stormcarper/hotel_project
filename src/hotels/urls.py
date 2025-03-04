@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import HotelListView, upload_hotels, clear_hotels, HotelDetailView, ReservationFormView, get_rooms_and_hotel, get_hotel_and_room
+from .views import HotelListView, clear_hotels, HotelDetailView, ReservationFormView, get_rooms_and_hotel, get_hotel_and_room
 
 urlpatterns = [
     path('', HotelListView.as_view(), name='hotels'),
-    path('upload/', upload_hotels, name='upload_hotels'),
     # path('get/', get_data, name='get_data'),
     path('clear/', clear_hotels, name='clear_hotels'),
     path('hotel/<int:pk>/', HotelDetailView.as_view(), name='hotel_detail'),

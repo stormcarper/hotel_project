@@ -208,7 +208,7 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False)
 EMAIL_TIMEOUT = 10
 
-DEFAULT_FROM_EMAIL = "hotel_project@example.com"
+DEFAULT_FROM_EMAIL = "hotelbookings64@gmail.com"
 
 #
 # LOGGING

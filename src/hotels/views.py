@@ -2,57 +2,12 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.admin.views.decorators import staff_member_required
+from django.conf import settings
 from .models import Hotel, Geo, Room
 from .forms import ReservationForm
-import json
-
-# Create your views here.
-def hello_world(request):
-    return render(request, 'hello_world.html')
-
-@csrf_exempt
-def upload_hotels(request):
-    if request.method == 'POST':
-        hotels = json.loads(request.body)
-        for hotel in hotels:
-            hotel_instance = Hotel.objects.create(
-                title=hotel['title'],
-                name=hotel['name'],
-                alt=hotel['alt'],
-                address=hotel['address'],
-                directions=hotel['directions'],
-                phone=hotel['phone'],
-                tollfree=hotel['tollfree'],
-                email=hotel['email'],
-                fax=hotel['fax'],
-                url=hotel['url'],
-                hours=hotel['hours'],
-                checkin=hotel['checkin'],
-                checkout=hotel['checkout'],
-                image=hotel['image'],
-                price=hotel['price'],
-                content=hotel['content'],
-                activity=hotel['activity'],
-                type=hotel['type'],
-                availability=hotel['availability']
-            )
-            Geo.objects.create(
-                hotel=hotel_instance,
-                lat=hotel['geo']['lat'],
-                lon=hotel['geo']['lon']
-            )
-            for room in hotel['rooms']:
-                Room.objects.create(
-                    hotel=hotel_instance,
-                    room_type=room['type'],
-                    price=room['price'],
-                    availability=room['availability']
-                )
-        return HttpResponse(status=201)
-    else:
-        return HttpResponse(status=405)
 
 class HotelListView(ListView):
     paginate_by = 12
@@ -114,6 +69,17 @@ class ReservationFormView(CreateView):
     
     def form_valid(self, form):
         form.save()
+        try:
+            send_mail (
+                'Reservation Confirmation',
+                'Thank you for your reservation!',
+                'storm@maykinmedia.nl',
+                ['stormcarper@gmail.com'],
+                fail_silently=False
+            )
+            print('Email sent')
+        except:
+            return HttpResponse(status=500)
         return HttpResponse(status=201)
     
 def get_rooms_and_hotel(request, pk):
