@@ -9,15 +9,52 @@
         <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
         <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
         <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
-        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" />
+        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" /> <!-- Include the bundled CSS file -->
         {% block extra_css %}{% endblock %}
     </head>
 
     <body class="view__body">
         <main>
             {% block content %}
-                Override <code>{% verbatim %}{% block content %}{% endverbatim %}</code>
-                to get some actual content.
+            <h1>Hotel website</h1>
+            <h2>Rooms</h2>
+            <div class="hotel-card-container">
+                {% for hotel in hotels %}
+                <div class="hotel-card" data-hotel-id="{{ hotel.hotel_id }}">
+                    <img src="{{ hotel.image }}" alt="Hotel Image" class="hotel-card__image">
+                    <div class="hotel-card__content">
+                        <h3>{{ hotel.name }}</h3>
+                        <p>{{ hotel.description }}</p>
+                    </div>
+                    <div class="hotel-card__footer">
+                        <div class="hotel-card__availability">
+                            <span class="hotel-card__badge {% if hotel.availability %}hotel-card__badge--available{% else %}hotel-card__badge--unavailable{% endif %}">
+                                Availability: {% if hotel.availability %}Available{% else %}Not Available{% endif %}
+                            </span>
+                        </div>
+                        <span class="hotel-card__footer__price">{{ hotel.price }}</span>
+                        <a href="{% url 'hotel_detail' pk=hotel.hotel_id %}" class="hotel-card__footer__button">Book Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="hotel-card__pagination">
+                    <span class="hotel-card__step-links">
+                        {% if hotels.has_previous %}
+                            <a href="?page=1">first</a>
+                            <a href="?page={{ hotels.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="hotel-card__current">
+                            Page {{ hotels.number }} of {{ hotels.paginator.num_pages }}
+                        </span>
+
+                        {% if hotels.has_next %}
+                            <a href="?page={{ hotels.next_page_number }}"> next</a>
+                            <a href="?page={{ hotels.paginator.num_pages }}">last</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
             {% endblock %}
         </main>
         {% if dsn %}

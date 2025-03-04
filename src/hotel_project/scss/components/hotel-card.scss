@@ -1,0 +1,198 @@
+/* Hotel Card */
+.hotel-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 30px;
+    padding: 25px;
+    max-width: 2000px;
+    margin: 0 auto;
+
+    /* Responsive Styling */
+    @media (max-width: 1600px) {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 20px;
+    }
+}
+
+/* Hotel Card */
+.hotel-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    &__image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    &__content {
+        padding: 0;
+        flex: 1;
+        margin-bottom: 15px;
+
+        h3 {
+            margin: 0 0 12px;
+            font-size: 1.5rem;
+            color: #222;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: #555;
+            line-height: 1.6;
+        }
+    }
+
+    &__availability {
+        margin-bottom: 15px;
+        
+        .hotel-card__badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            text-align: center;
+            
+            &--available {
+                background-color: #28a745;
+                color: #fff;
+            }
+            
+            &--unavailable {
+                background-color: #dc3545;
+                color: #fff;
+            }
+        }
+    }
+
+    /* hotel card footer*/
+    &__footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        margin-top: auto;
+        border-top: 1px solid #f0f0f0;
+
+        &__price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin: 8px 0;
+        }
+
+        &__button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            background-color: #04a5bb;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin: 8px 0;
+
+            &:hover {
+                background-color: #038fa1;
+                transform: translateY(-2px);
+            }
+        }
+    }
+
+    /* pagination */
+    &__pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #f0f0f0;
+        grid-column: 1 / -1;
+    }
+
+    &__step-links {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        a {
+            padding: 8px 16px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                background-color: #f5f5f5;
+                border-color: #04a5bb;
+                color: #04a5bb;
+            }
+        }
+    }
+
+    &__current {
+        padding: 8px 16px;
+        margin: 0 8px;
+        background-color: #04a5bb;
+        color: white;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+}
+
+@media (max-width: 768px) {
+    .hotel-card__step-links {
+        gap: 5px;
+        
+        a {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+    }
+    
+    .hotel-card__current {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
+    
