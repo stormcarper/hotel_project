@@ -1,0 +1,75 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="view {% block view_class %}view--{{ request.resolver_match.namespaces|join:'-' }}-{{ request.resolver_match.url_name }}{% endblock %}">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Reservation{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'ico/favicon.svg' %}" sizes="any" rel="icon" type="image/svg+xml" />
+        <link href="{% static 'ico/favicon-96x96.png' %}" sizes="96x96" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
+        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" />
+        {% block extra_css %}{% endblock %}
+    </head>
+
+    <body class="view__body">
+        <main>
+            {% block content %}
+            <div class="reservation__container">
+                <h1 class="reservation__title">Confirm Your Reservation</h1>
+                <h2 class="reservation__subtitle" id="hotel"></h2>
+                <div class="reservation__detail">Your stay is from: <strong id="start_date"></strong> till: <strong id="end_date"></strong></div>
+                <div class="reservation__detail">Room: <strong id="room-type"></strong></div>
+                <p class="reservation__price">Total price: $<span id="total"></span></p>
+                
+                <form method="post" class="reservation__form">
+                    {% csrf_token %}
+                    <input type="hidden" name="{{ form.hotel.name }}" id="hotel_input" value="{{ form.hotel.value|default:'' }}">
+                    <input type="hidden" name="{{ form.room.name }}" id="room_input" value="{{ form.room.value|default:'' }}">
+                    <input type="hidden" name="{{ form.start_date.name }}" id="start_date_input" value="{{ form.start_date.value|default:'' }}">
+                    <input type="hidden" name="{{ form.end_date.name }}" id="end_date_input" value="{{ form.end_date.value|default:'' }}">
+                    <input type="hidden" name="{{ form.price.name }}" id="price_input" value="{{ form.price.value|default:'' }}">
+                    
+                    <div class="field-group">
+                        <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="{{ form.address.id_for_label }}">Address</label>
+                        {{ form.address }}
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="{{ form.zip.id_for_label }}">Zip Code</label>
+                        {{ form.zip }}
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="{{ form.country.id_for_label }}">Country</label>
+                        {{ form.country }}
+                    </div>
+                    
+                    <button type="submit" class="reservation__button">Complete Reservation</button>
+                </form>
+            </div>
+            {% endblock %}
+        </main>
+        {% if dsn %}
+            <script src="https://browser.sentry-cdn.com/5.10.1/bundle.min.js" integrity="sha384-sAOze6ZTBIpiWBF3VlUteSInM4rYpjxrejp1wMmmKqA9clRZ1vZJ36Ihmt1ilTrG" crossorigin="anonymous"></script>
+            <script>Sentry.init({ dsn: '{{ dsn }}'});</script>
+        {% endif %}
+        <script src="{% static 'bundles/hotel_project-js.js' %}"></script>
+    </body>
+</html>

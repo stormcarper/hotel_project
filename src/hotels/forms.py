@@ -1,22 +1,21 @@
 from django import forms
+from .models import Reservation, Room
+from django_countries.widgets import CountrySelectWidget
 
-class UploadHotel(forms.Form):
-    title  = forms.CharField(max_length=50)
-    name = forms.CharField(max_length=30)
-    alt = forms.CharField(max_length=30, required=False)
-    address = forms.CharField(max_length=100)
-    directions = forms.CharField(max_length=200)
-    phone = forms.CharField(max_length=15)
-    tollfree = forms.CharField(max_length=20, required=False)
-    email = forms.EmailField()
-    fax = forms.CharField(max_length=30)
-    url = forms.URLField()
-    hours = forms.CharField(max_length=5, required=False)
-    checkin = forms.CharField(max_length=5)
-    checkout = forms.CharField(max_length=5)
-    image = forms.CharField(required=False)
-    price = forms.CharField(max_length=10)
-    content = forms.CharField()
-    activity = forms.CharField(max_length=100)
-    type = forms.CharField(max_length=20)
-    availability = forms.BooleanField()
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ["hotel", "room", "price", "start_date", "end_date", "first_name", "last_name", "email", "address", "zip", "country"]
+        widgets = {"country": CountrySelectWidget(), "start_date": forms.DateInput(attrs={"type": "date"}), "end_date": forms.DateInput(attrs={"type": "date"})}
+
+    def __init__(self, *args, **kwargs):
+        rooms = kwargs.pop("room", None)  
+        
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        if rooms:
+            self.fields["room"].queryset = rooms.filter(availability=True)
+            # see the room_type in the select form
+            self.fields["room"].label_from_instance = lambda obj: obj.room_type
+        else:
+            self.fields["room"].queryset = Room.objects.filter(availability=True)
+

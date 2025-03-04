@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     "axes",
     "hijack",
     "hijack.contrib.admin",
+    "django_countries",
     # Project applications.
     "hotel_project.accounts",
     "hotel_project.utils",

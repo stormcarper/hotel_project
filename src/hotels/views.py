@@ -1,10 +1,11 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
+from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import Hotels, Geo, Rooms
+from .models import Hotel, Geo, Room
+from .forms import ReservationForm
 import json
 
 # Create your views here.
@@ -16,7 +17,7 @@ def upload_hotels(request):
     if request.method == 'POST':
         hotels = json.loads(request.body)
         for hotel in hotels:
-            hotel_instance = Hotels.objects.create(
+            hotel_instance = Hotel.objects.create(
                 title=hotel['title'],
                 name=hotel['name'],
                 alt=hotel['alt'],
@@ -43,7 +44,7 @@ def upload_hotels(request):
                 lon=hotel['geo']['lon']
             )
             for room in hotel['rooms']:
-                Rooms.objects.create(
+                Room.objects.create(
                     hotel=hotel_instance,
                     room_type=room['type'],
                     price=room['price'],
@@ -53,15 +54,15 @@ def upload_hotels(request):
     else:
         return HttpResponse(status=405)
 
-class HotelsListView(ListView):
+class HotelListView(ListView):
     paginate_by = 12
-    model = Hotels
+    model = Hotel
     template_name = 'master.html'
     context_object_name = 'hotels'
 
     def get_context_data(self, **kwargs):
-        context = super(HotelsListView, self).get_context_data(**kwargs)
-        hotels = Hotels.objects.all()
+        context = super(HotelListView, self).get_context_data(**kwargs)
+        hotels = Hotel.objects.all()
         paginator = Paginator(hotels, self.paginate_by)
 
         page = self.request.GET.get('page')
@@ -71,7 +72,7 @@ class HotelsListView(ListView):
         return context
     
 class HotelDetailView(DetailView):
-    model = Hotels
+    model = Hotel
     template_name = 'hotel_detail_page.html'
     context_object_name = 'hotel'
 
@@ -80,22 +81,72 @@ class HotelDetailView(DetailView):
         hotel = self.get_object()
         geo_data = Geo.objects.filter(hotel=hotel.hotel_id).all()
         context['geo'] = geo_data
-        rooms = Rooms.objects.filter(hotel=hotel.hotel_id).all()
+        rooms = Room.objects.filter(hotel=hotel.hotel_id).all()
         context['rooms'] = rooms
         return context
 
 def clear_hotels(request):
-    Hotels.objects.all().delete()
-    if Hotels.objects.count() == 0:
+    Hotel.objects.all().delete()
+    if Hotel.objects.count() == 0:
         return HttpResponse(status=204)
     else:
         return HttpResponse(status=500)
     
 
 def hotel_detail(request, hotel_id):
-    if Hotels.objects.filter(hotel_id=hotel_id).count() == 0:
+    if Hotel.objects.filter(hotel_id=hotel_id).count() == 0:
         return render(request, '404.html')
-    hotel = Hotels.objects.filter(hotel_id=hotel_id).values()[0]
+    hotel = Hotel.objects.filter(hotel_id=hotel_id).values()[0]
     hotel['geo'] = Geo.objects.filter(hotel=hotel_id).values()[0]
-    hotel['rooms'] = list(Rooms.objects.filter(hotel=hotel_id).values())
+    hotel['rooms'] = list(Room.objects.filter(hotel=hotel_id).values())
     return render(request, 'hotel_detail_page.html', {'hotel': hotel})
+
+class ReservationFormView(CreateView):
+    template_name = "reservation.html"
+    form_class = ReservationForm
+
+    def get_form_kwargs(self):
+        kwargs = super(ReservationFormView, self).get_form_kwargs()
+        hotel = Hotel.objects.get(hotel_id=self.kwargs['pk'])
+        rooms = Room.objects.filter(hotel=hotel.hotel_id).all()
+        kwargs["room"] = rooms
+        return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return HttpResponse(status=201)
+    
+def get_rooms_and_hotel(request, pk):
+    if Hotel.objects.filter(hotel_id=pk).count() == 0:
+        return JsonResponse({"error": "Hotel not found"}, status=404)
+    hotel = Hotel.objects.get(hotel_id=pk)
+    rooms = Room.objects.filter(hotel=hotel).all()
+    rooms = rooms.filter(availability=True)
+    return render(request, 'reservation_date.html', {'hotel': hotel, 'rooms': rooms})
+
+def get_hotel_and_room(request, Hpk, Rpk):
+    if Hotel.objects.filter(hotel_id=Hpk).count() == 0:
+        return JsonResponse({"error": "Hotel not found"}, status=404)
+    hotel = Hotel.objects.get(hotel_id=Hpk)
+    hotel_dict = {
+        'hotel_id': hotel.hotel_id,
+        'name': hotel.name,
+        'title': hotel.title,
+        'address': hotel.address,
+        'price': hotel.price,
+    }
+    room = Room.objects.filter(room_id=Rpk).first()
+    if not room:
+        return JsonResponse({"error": "Room not found"}, status=404)
+    room_dict = {
+        'room_id': room.room_id,
+        'room_type': room.room_type,
+        'price': room.price,
+    }
+    return JsonResponse({"hotel": hotel_dict, "room": room_dict}, status=200)
+
+
+
+
+
+

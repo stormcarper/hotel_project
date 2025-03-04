@@ -41,7 +41,7 @@
                             {% endfor %}
                         </select>
                         <p class="hotel-page__room__price">Select a room to see the price</p>
-                        <button class="hotel-page__button hotel-page__button--primary" disabled>Order</button>
+                        <a href="{% url 'reservation_date' pk=hotel.hotel_id %}" class="hotel-page__button hotel-page__button--primary">Order</a>
                     </div>
                 </div>
 

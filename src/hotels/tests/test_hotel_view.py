@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
-from hotels.models import Hotels, Geo, Rooms
+from hotels.models import Hotel, Geo, Room
 
 class HotelViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        hotel1 = Hotels.objects.create(
+        hotel1 = Hotel.objects.create(
             title='Title1',
             name='Hotel1',
             alt='alt1',
@@ -30,20 +30,20 @@ class HotelViewTest(TestCase):
             lat=1,
             lon=1
         )
-        Rooms.objects.create(
+        Room.objects.create(
             hotel=hotel1,
             room_type='room1',
             price=100,
             availability=False
         )
-        Rooms.objects.create(
+        Room.objects.create(
             hotel=hotel1,
             room_type='room2',
             price=150,
             availability=True
         )
 
-        hotel2 = Hotels.objects.create(
+        hotel2 = Hotel.objects.create(
             title='Title2',
             name='Hotel2',
             alt='alt2',
@@ -69,7 +69,7 @@ class HotelViewTest(TestCase):
             lat=2,
             lon=2
         )
-        Rooms.objects.create(
+        Room.objects.create(
             hotel=hotel2,
             room_type='room2',
             price=200,
@@ -100,7 +100,7 @@ class HotelViewTest(TestCase):
 
     # test hotel detail view
     def test_hotel_detail_view(self):
-        hotel1 = Hotels.objects.get(title='Title1')
+        hotel1 = Hotel.objects.get(title='Title1')
         response = self.client.get(f'/hotel/{hotel1.hotel_id}/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'hotel_detail_page.html')
@@ -124,7 +124,7 @@ class HotelViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_hotel_detail_view_rooms(self):
-        hotel2 = Hotels.objects.get(title='Title2')
+        hotel2 = Hotel.objects.get(title='Title2')
         response = self.client.get(f'/hotel/{hotel2.hotel_id}/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'hotel_detail_page.html')

@@ -1,0 +1,58 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="view {% block view_class %}view--{{ request.resolver_match.namespaces|join:'-' }}-{{ request.resolver_match.url_name }}{% endblock %}">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Select Dates{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'ico/favicon.svg' %}" sizes="any" rel="icon" type="image/svg+xml" />
+        <link href="{% static 'ico/favicon-96x96.png' %}" sizes="96x96" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon-32x32.png' %}" sizes="32x32" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" sizes="16x16" rel="icon" type="image/png" />
+        <link href="{% static 'ico/favicon.png' %}" rel="shortcut icon">
+        <link href="{% static 'bundles/hotel_project-css.css' %}" media="all" rel="stylesheet" />
+        {% block extra_css %}{% endblock %}
+    </head>
+
+    <body class="view__body">
+        <main>
+            {% block content %}
+            <div class="reservation__container">
+                <h1 class="reservation__title">Book your stay at {{ hotel.name }}</h1>
+                
+                <div class="reservation__room-select">
+                    <label for="room">Select a Room</label>
+                    <select name="room" id="room" class="reservation__select">
+                        <option value="" disabled selected>Choose a room</option>
+                        {% for room in hotel.rooms.all %}
+                        {% if room.availability %}
+                            <option value="{{ room.room_id }}" price="{{ room.price }}">{{ room.room_type }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <span id="reservation__room-price" class="room-price">Select a room to see the price! </span>
+                </div>
+                
+                <div class="reservation__date-inputs">
+                    <div class="field-group">
+                        <label for="start_date">Check-in Date</label>
+                        <input type="date" id="start_date" name="start_date" class="reservation__input">
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="end_date">Check-out Date</label>
+                        <input type="date" id="end_date" name="end_date" class="reservation__input">
+                    </div>
+                    <h3>the price will be calculated on the next page.</h3>
+                </div>
+                <h3 id="reservation__alert" class="reservation__alert" style="display:none"></h3>
+                <button id="submit_date" class="reservation__button">Continue to Booking</button>
+            </div>
+            {% endblock %}
+        </main>
+        {% if dsn %}
+            <script src="https://browser.sentry-cdn.com/5.10.1/bundle.min.js" integrity="sha384-sAOze6ZTBIpiWBF3VlUteSInM4rYpjxrejp1wMmmKqA9clRZ1vZJ36Ihmt1ilTrG" crossorigin="anonymous"></script>
+            <script>Sentry.init({ dsn: '{{ dsn }}'});</script>
+        {% endif %}
+        <script src="{% static 'bundles/hotel_project-js.js' %}"></script>
+    </body>
+</html>
