@@ -67,7 +67,10 @@ class ReservationFormView(CreateView):
         rooms = Room.objects.filter(hotel=hotel.hotel_id).all()
         kwargs["room"] = rooms
         return kwargs
-    
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
     def form_valid(self, form):
         form.save()
         try:
@@ -82,7 +85,6 @@ class ReservationFormView(CreateView):
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             
-            # Create personalized email message
             email_subject = f"Reservation Confirmation - {hotel_name}"
 
             text_content = render_to_string(
@@ -122,7 +124,15 @@ class ReservationFormView(CreateView):
         except Exception as e:
             print(f'Error sending email: {str(e)}')
             return HttpResponse(status=500)
-        return HttpResponse(status=201)
+        return render(self.request, 'reservation_succes.html', {
+            'hotel_name': hotel_name,
+            'room_type': room_type,
+            'start_date': start_date,
+            'end_date': end_date,
+            'price': price,
+            'first_name': first_name,
+            'last_name': last_name
+        })
     
 def get_rooms_and_hotel(request, pk, Rpk):
     if Hotel.objects.filter(hotel_id=pk).count() == 0:

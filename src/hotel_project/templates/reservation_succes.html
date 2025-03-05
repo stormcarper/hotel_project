@@ -16,29 +16,26 @@
     <body class="view__body">
         <main>
             {% block content %}
-            <div class="reservation__container">
-                <h1 class="reservation__title">Book your stay at {{ hotel.name }}</h1>
-                <div class="reservation__room-select">
-                    <h2>selected Room:</h2>
-                    <h3 id="reservation__room-type" class="room-type">{{ room.room_type }}</h3>
-                    <span id="reservation__room-price" class="room-price">{{ room.price }}</span>
-                </div>
-                
-                <div class="reservation__date-inputs">
-                    <div class="field-group">
-                        <label for="start_date">Check-in Date</label>
-                        <input type="date" id="start_date" name="start_date" class="reservation__input">
+            <div class="reservation-succes__container">
+                <h2>Reservation Confirmation</h2>
+                <div class="confirmation-details">
+                    <p class="confirmation-message">Thank you for your reservation, {{ first_name }} {{ last_name }}!</p>
+                    <div class="reservation-summary">
+                        <h3>Your Booking Details</h3>
+                        <ul>
+                            <li><strong>Hotel:</strong> <span>{{ hotel_name }}</span></li>
+                            <li><strong>Room Type:</strong> <span>{{ room_type }}</span></li>
+                            <li><strong>Check-in Date:</strong> <span>{{ start_date }}</span></li>
+                            <li><strong>Check-out Date:</strong> <span>{{ end_date }}</span></li>
+                            <li><strong>Total Price:</strong> <span>${{ price }}</span></li>
+                        </ul>
                     </div>
-                    
-                    <div class="field-group">
-                        <label for="end_date">Check-out Date</label>
-                        <input type="date" id="end_date" name="end_date" class="reservation__input">
-                    </div>
-                    <h3>the price will be calculated on the next page.</h3>
+                    <p class="confirmation-note">A confirmation email has been sent to your email address.</p>
+                    <p class="contact-info">If you have any questions, please contact our customer service.</p>
+                    <a href="/" class="btn-primary">Return to Homepage</a>
                 </div>
-                <h3 id="reservation__alert" class="reservation__alert" style="display:none"></h3>
-                <button id="submit_date" class="reservation__button">Continue to Booking</button>
             </div>
+
             {% endblock %}
         </main>
         {% if dsn %}

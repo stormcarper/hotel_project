@@ -11,7 +11,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
     &__title {
       font-size: 2rem;
       margin-bottom: 5px;
@@ -68,6 +68,17 @@
       
       .field-group {
         margin-bottom: 15px;
+      }
+
+      &__error {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+      }
+
+      &__errorlist {
+        color: red;
       }
     }
     
