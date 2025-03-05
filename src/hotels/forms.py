@@ -34,9 +34,6 @@ class ReservationForm(forms.ModelForm):
                 raise forms.ValidationError("End date must be after start date")
             if start_date < date:
                 raise forms.ValidationError("Start date must be after today's date")
-            
-            
-        
-            
-        
+            if start_date == end_date:
+                raise forms.ValidationError("Start date and End date cannot be the same")
         return cleaned_data
