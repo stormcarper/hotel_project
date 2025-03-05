@@ -58,11 +58,48 @@ class ReservationFormViewTest(TestCase):
         form = ReservationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
+    # test empty form
+    def test_reservation_form_empty(self):
+        form = ReservationForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 11)
+
+    # test unavailable room
     def test_reservation_form_unavailable_room(self):
         self.form_data['room'] = self.room2.room_id
         form = ReservationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
+    # test non existing hotel
+    def test_non_existing_hotel(self):
+        self.form_data['hotel'] = 999
+        form = ReservationForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Select a valid choice. That choice is not one of the available choices.', form.errors['hotel'])
+
+
+    # test non existing room
+    def test_non_existing_room(self):
+        self.form_data['room'] = 999
+        form = ReservationForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Select a valid choice. That choice is not one of the available choices.', form.errors['room'])
+
+    # test invalid email
+    def test_invalid_email(self):
+        self.form_data['email'] = 'john'
+        form = ReservationForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Enter a valid email address.', form.errors['email'])
+
+    # test invalid country code
+    def test_invalid_country(self):
+        self.form_data['country'] = 'USA'
+        form = ReservationForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Select a valid choice. USA is not one of the available choices.', form.errors['country'])
+
+    # test invalid dates
     def test_reservation_form_invalid_dates(self):
         #test if start date is before today's date
         self.form_data['start_date'] = '2024-03-22'
