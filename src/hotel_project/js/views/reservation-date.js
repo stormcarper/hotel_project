@@ -1,15 +1,35 @@
+import flatpickr from "flatpickr";
+
 document.addEventListener('DOMContentLoaded', function () {
     // Check if the current page is the reservation date page
     if (this.location.pathname.includes('reservation/date')) {
         // get the room_id form the url
         const room = this.location.pathname.split('/')[4];
 
+        const start_date = document.getElementById('start_date')
+        const end_date = document.getElementById('end_date')
+
+        flatpickr(start_date, {
+            inline: true,
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(1095)
+        });
+
+        flatpickr(end_date, {
+            inline: true,
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(1095)
+        })
         // add an click event listener on the submit button
         document.getElementById('submit_date').addEventListener('click', function () {
             // select the check-in and check-out date
             let checkIn = document.getElementById('start_date').value;
             let checkOut = document.getElementById('end_date').value;
 
+            console.log(checkIn);
+            console.log(checkOut);
             //get hotel url from the current page
             let url = window.location.href;
             let hotel = url.split('/')[5];

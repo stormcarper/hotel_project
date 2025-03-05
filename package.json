@@ -20,6 +20,7 @@
   "license": "UNLICENSED",
   "homepage": "https://maykinmedia.nl",
   "dependencies": {
+    "flatpickr": "^4.6.13",
     "microscope-sass": "latest"
   },
   "devDependencies": {

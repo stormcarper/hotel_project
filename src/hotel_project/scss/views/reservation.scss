@@ -95,13 +95,9 @@
       transition: background-color 0.3s;
       
       &:hover {
-        filter: brightness(80%);
+          filter: brightness(80%);
       }
       
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
     }
 
     /* Alert Styling */

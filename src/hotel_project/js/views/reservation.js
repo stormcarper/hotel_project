@@ -41,46 +41,46 @@ document.addEventListener('DOMContentLoaded', function () {
         checkOut = data.checkOut;
         price = 0;
 
-        // fetch the hotel and room data
-        fetch(`/api/hotel/${hotel}/room/${room}`)
-            .then(response => response.json()
-                .then(data => {
+        if (document.getElementsByTagName('form').length > 0) {
+            // fetch the hotel and room data
+            fetch(`/api/hotel/${hotel}/room/${room}`)
+                .then(response => response.json()
+                    .then(data => {
 
-                    // set the fetched data to the page
-                    document.getElementById('hotel').innerText = data.hotel.name;
-                    document.getElementById('start_date').innerText = checkIn;
-                    document.getElementById('end_date').innerText = checkOut;
-                    document.getElementById('room-type').innerText = data.room.room_type;
-                    price = parseFloat(data.room.price.replace(/[^0-9.]/g, ''));
-                    document.getElementById('total').innerText = price.toFixed(2);
+                        // set the fetched data to the page
+                        document.getElementById('hotel').innerText = data.hotel.name;
+                        document.getElementById('start_date').innerText = checkIn;
+                        document.getElementById('end_date').innerText = checkOut;
+                        document.getElementById('room-type').innerText = data.room.room_type;
+                        price = parseFloat(data.room.price.replace(/[^0-9.]/g, ''));
+                        document.getElementById('total').innerText = price.toFixed(2);
 
-                // assign the values from the sessionstorage to the django form fields
-                const hotelField = document.getElementById('hotel_input');
-                if (hotelField) hotelField.value = hotel;
-                const roomField = document.getElementById('room_input');
-                if (roomField) roomField.value = room;
-                const startDateField = document.getElementById('start_date_input');
-                const endDateField = document.getElementById('end_date_input');
-                if (startDateField) startDateField.value = checkIn;
-                if (endDateField) endDateField.value = checkOut;
-                
-                    // Parse dates and calculate total
-                    const checkInDate = parseDate(checkIn);
-                    const checkOutDate = parseDate(checkOut);
+                    // assign the values from the sessionstorage to the django form fields
+                    const hotelField = document.getElementById('hotel_input');
+                    if (hotelField) hotelField.value = hotel;
+                    const roomField = document.getElementById('room_input');
+                    if (roomField) roomField.value = room;
+                    const startDateField = document.getElementById('start_date_input');
+                    const endDateField = document.getElementById('end_date_input');
+                    if (startDateField) startDateField.value = checkIn;
+                    if (endDateField) endDateField.value = checkOut;
                     
-                    // Calculate the total price
-                    if (checkInDate && checkOutDate) {
-                        const nights = datediff(checkInDate, checkOutDate);
-                        document.getElementById('total').innerText = (nights * price).toFixed(2);
-                        const priceField = document.getElementById('price_input');
-                        if (priceField) priceField.value = (nights * price).toFixed(2);
-                    } else {
-                        document.getElementById('total').innerText = "Invalid dates";
-                    }
+                        // Parse dates and calculate total
+                        const checkInDate = parseDate(checkIn);
+                        const checkOutDate = parseDate(checkOut);
+                        
+                        // Calculate the total price
+                        if (checkInDate && checkOutDate) {
+                            const nights = datediff(checkInDate, checkOutDate);
+                            document.getElementById('total').innerText = (nights * price).toFixed(2);
+                            const priceField = document.getElementById('price_input');
+                            if (priceField) priceField.value = (nights * price).toFixed(2);
+                        } else {
+                            document.getElementById('total').innerText = "Invalid dates";
+                        }
 
-                })
-            )
-
-
+                    })
+                )
+        }
     }
 })
