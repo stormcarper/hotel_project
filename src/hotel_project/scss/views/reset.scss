@@ -1,0 +1,66 @@
+/* CSS Reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    font-family: Arial, sans-serif; /* Matches your project's font */
+}
+
+body {
+    line-height: 1.5;
+    background-color: #f8f9fa; /* Matches your site's background */
+    color: #343a40; /* Matches your site's text color */
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Avoids whitespace below images */
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit; /* Ensures consistent font styles */
+    border: none; /* Removes default borders */
+    background: none; /* Removes default backgrounds */
+}
+
+button {
+    cursor: pointer; /* Adds pointer for buttons */
+}
+
+ul,
+ol {
+    list-style: none; /* Removes bullets and numbers */
+}
+
+a {
+    text-decoration: none; /* Removes underline from links */
+    color: inherit; /* Inherits parent text color */
+}
+
+table {
+    border-collapse: collapse; /* Ensures table borders collapse */
+}
+
+blockquote,
+q {
+    quotes: none; /* Removes default quotes */
+}
+
+q::before,
+q::after,
+blockquote::before,
+blockquote::after {
+    content: '';
+}
