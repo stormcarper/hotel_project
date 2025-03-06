@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const room = data.room;
         const checkIn = data.checkIn;
         const checkOut = data.checkOut;
-        const price = 0;
+        let price = 0;
 
         if (document.getElementsByTagName('form').length > 0) {
             // fetch the hotel and room data
@@ -48,20 +48,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(data => {
 
                         // set the fetched data to the page
-                        document.getElementById('hotel').innerText = data.hotel.name;
-                        document.getElementById('start_date').innerText = checkIn;
-                        document.getElementById('end_date').innerText = checkOut;
-                        document.getElementById('room-type').innerText = data.room.room_type;
+                        document.querySelector('.reservation__hotel').innerText = data.hotel.name;
+                        document.querySelector('.reservation__start_date').innerText = checkIn;
+                        document.querySelector('.reservation__end_date').innerText = checkOut;
+                        document.querySelector('.reservation__room_type').innerText = data.room.room_type;
                         price = parseFloat(data.room.price.replace(/[^0-9.]/g, ''));
-                        document.getElementById('total').innerText = price.toFixed(2);
+                        document.querySelector('.reservation__total').innerText = price.toFixed(2);
 
                     // assign the values from the sessionstorage to the django form fields
-                    const hotelField = document.getElementById('hotel_input');
+                    const hotelField = document.querySelector('.reservation__form__hotel_input');
                     if (hotelField) hotelField.value = hotel;
-                    const roomField = document.getElementById('room_input');
+                    const roomField = document.querySelector('.reservation__form__room_input');
                     if (roomField) roomField.value = room;
-                    const startDateField = document.getElementById('start_date_input');
-                    const endDateField = document.getElementById('end_date_input');
+                    const startDateField = document.querySelector('.reservation__form__start_date_input');
+                    const endDateField = document.querySelector('.reservation__form__end_date_input');
                     if (startDateField) startDateField.value = checkIn;
                     if (endDateField) endDateField.value = checkOut;
                     
@@ -72,11 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Calculate the total price
                         if (checkInDate && checkOutDate) {
                             const nights = datediff(checkInDate, checkOutDate);
-                            document.getElementById('total').innerText = (nights * price).toFixed(2);
-                            const priceField = document.getElementById('price_input');
+                            document.querySelector('.reservation__total').innerText = (nights * price).toFixed(2);
+                            const priceField = document.querySelector('.reservation__form__price_input');
                             if (priceField) priceField.value = (nights * price).toFixed(2);
                         } else {
-                            document.getElementById('total').innerText = "Invalid dates";
+                            document.querySelector('.reservation__total').innerText = "Invalid dates";
                         }
 
                     })

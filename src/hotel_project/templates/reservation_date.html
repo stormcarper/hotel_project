@@ -28,17 +28,17 @@
                 <div class="reservation__date-inputs">
                     <div class="field-group">
                         <label for="start_date">Check-in Date</label>
-                        <input type="date" id="start_date" name="start_date" class="reservation__input">
+                        <input type="date" name="start_date" class="reservation__input__start_date">
                     </div>
                     
                     <div class="field-group">
                         <label for="end_date">Check-out Date</label>
-                        <input type="date" id="end_date" name="end_date" class="reservation__input">
+                        <input type="date" name="end_date" class="reservation__input__end_date">
                     </div>
                     <h3>the price will be calculated on the next page.</h3>
                 </div>
-                <h3 id="reservation__alert" class="reservation__alert" style="display:none"></h3>
-                <button id="submit_date" class="reservation__button">Continue to Booking</button>
+                <h3 class="reservation__alert" style="display:none"></h3>
+                <button class="reservation__button">Continue to Booking</button>
             </div>
             {% endblock %}
         </main>

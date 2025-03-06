@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // handle order submission
-        document.getElementById('hotel-page__button').addEventListener('click', function() {
+        document.querySelector('.hotel-page__button.hotel-page__button--primary').addEventListener('click', function() {
             let room = document.querySelector('.hotel-page__input');
             let price = room.value;
-            let roomId = room.options[room.selectedIndex].getAttribute('roomId');
+            let roomId = room.options[room.selectedIndex].getAttribute('room_id');
             let alert = document.querySelector('.hotel-page__alert');
             let hotel = window.location.pathname.split('/')[2];
             if (!price) {

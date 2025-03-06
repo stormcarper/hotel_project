@@ -18,14 +18,14 @@
             {% block content %}
             <div class="reservation__container">
                 <h1 class="reservation__title">Confirm Your Reservation</h1>
-                <h2 class="reservation__subtitle" id="hotel"></h2>
+                <h2 class="reservation__hotel"></h2>
                 {{ form.hotel.errors }}
-                <div class="reservation__detail">Your stay is from: <strong id="start_date"></strong> till: <strong id="end_date"></strong></div>
+                <div class="reservation__detail">Your stay is from: <strong class="reservation__start_date"></strong> till: <strong class="reservation__end_date"></strong></div>
                 {{ form.start_date.errors }}
                 {{ form.end_date.errors }}
-                <div class="reservation__detail">Room: <strong id="room-type"></strong></div>
+                <div class="reservation__detail">Room: <strong class="reservation__room_type"></strong></div>
                 {{ form.room.errors }}
-                <p class="reservation__price">Total price: $<span id="total"></span></p>
+                <p class="reservation__price">Total price: $<span class="reservation__total"></span></p>
                 {{ form.price.errors }}
                 
                 <form method="post" class="reservation__form">
@@ -37,11 +37,11 @@
                       {% endfor %}
                     </ul>
                     {% endif %}
-                    <input type="hidden" name="{{ form.hotel.name }}" id="hotel_input" value="{{ form.hotel.value|default:'' }}">
-                    <input type="hidden" name="{{ form.room.name }}" id="room_input" value="{{ form.room.value|default:'' }}">
-                    <input type="hidden" name="{{ form.start_date.name }}" id="start_date_input" value="{{ form.start_date.value|default:'' }}">
-                    <input type="hidden" name="{{ form.end_date.name }}" id="end_date_input" value="{{ form.end_date.value|default:'' }}">
-                    <input type="hidden" name="{{ form.price.name }}" id="price_input" value="{{ form.price.value|default:'' }}">
+                    <input type="hidden" name="{{ form.hotel.name }}" class="reservation__form__hotel_input" value="{{ form.hotel.value|default:'' }}">
+                    <input type="hidden" name="{{ form.room.name }}" class="reservation__form__room_input" value="{{ form.room.value|default:'' }}">
+                    <input type="hidden" name="{{ form.start_date.name }}" class="reservation__form__start_date_input" value="{{ form.start_date.value|default:'' }}">
+                    <input type="hidden" name="{{ form.end_date.name }}" class="reservation__form__end_date_input" value="{{ form.end_date.value|default:'' }}">
+                    <input type="hidden" name="{{ form.price.name }}" class="reservation__form__price_input" value="{{ form.price.value|default:'' }}">
 
                     <div class="field-group">
                         {{ form.first_name.errors }}

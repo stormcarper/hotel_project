@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (this.location.pathname.includes('reservation/date')) {
         // get the room_id form the url
         const room = this.location.pathname.split('/')[4];
-        const startDate = document.getElementById('start_date')
-        const endDate = document.getElementById('end_date')
+        const startDate = document.querySelector('.reservation__input__start_date')
+        const endDate = document.querySelector('.reservation__input__end_date')
 
         flatpickr(startDate, {
             inline: true,
@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
             maxDate: new Date().fp_incr(1095)
         })
         // add an click event listener on the submit button
-        document.getElementById('submit_date').addEventListener('click', function () {
+        document.querySelector('.reservation__button').addEventListener('click', function () {
             // select the check-in and check-out date
-            let checkIn = document.getElementById('start_date').value;
-            let checkOut = document.getElementById('end_date').value;
+            let checkIn = document.querySelector('.reservation__input__start_date').value;
+            let checkOut = document.querySelector('.reservation__input__end_date').value;
 
             //get hotel url from the current page
             let url = window.location.href;
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // check for empty fields
             if (!room || !checkIn || !checkOut) {
-                let alert = document.getElementById('reservation__alert');
+                let alert = document.querySelector('.reservation__alert');
                 alert.innerText = "Please fill in all fields";
                 alert.style.display = 'block';
                 return;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // check if checkin is before checkout
             if (checkIn >= checkOut) {
-                let alert = document.getElementById('reservation__alert');
+                let alert = document.querySelector('.reservation__alert');
                 alert.innerText = "Check-out date must be after check-in date";
                 alert.style.display = 'block';
                 return;
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let checkInDate = new Date(checkIn);
             let checkOutDate = new Date(checkOut);
             if (checkInDate < currentDate || checkOutDate < currentDate) {
-                let alert = document.getElementById('reservation__alert');
+                let alert = document.querySelector('.reservation__alert');
                 alert.innerText = "Check-in and check-out dates must be in the future";
                 alert.style.display = 'block';
                 return;
