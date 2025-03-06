@@ -76,6 +76,7 @@ class RoomsAndHotelAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'reservation_date.html')
         self.assertContains(response, self.hotel1.name)
+        self.assertContains(response, self.room1.room_type)
 
     # test for a non existing hotel
     def test_non_existing_hotel(self):
