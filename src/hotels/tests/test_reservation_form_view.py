@@ -1,5 +1,3 @@
-from datetime import date, timedelta
-from django.forms import ValidationError
 from django.test import TestCase, Client
 from hotels.models import Hotel, Room, Reservation
 from hotels.forms import ReservationForm
@@ -57,6 +55,22 @@ class ReservationFormViewTest(TestCase):
     def test_reservation_form_valid(self):
         form = ReservationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
+        form.save()
+        # check if reservation is succesfully created
+        reservation = Reservation.objects.all()
+        self.assertEqual(len(reservation), 1)
+        self.assertEqual(reservation[0].hotel.hotel_id, self.form_data['hotel'])
+        self.assertEqual(reservation[0].room.room_id, self.form_data['room'])
+        self.assertEqual(reservation[0].price, self.form_data['price'])
+        self.assertEqual(reservation[0].start_date.strftime('%Y-%m-%d'), str(self.form_data['start_date']))
+        self.assertEqual(reservation[0].end_date.strftime('%Y-%m-%d'), str(self.form_data['end_date']))
+        self.assertEqual(reservation[0].first_name, self.form_data['first_name'])
+        self.assertEqual(reservation[0].last_name, self.form_data['last_name'])
+        self.assertEqual(reservation[0].email, self.form_data['email'])
+        self.assertEqual(reservation[0].address, self.form_data['address'])
+        self.assertEqual(reservation[0].zip, self.form_data['zip'])
+        self.assertEqual(reservation[0].country, self.form_data['country'])
+        
 
     # test empty form
     def test_reservation_form_empty(self):
