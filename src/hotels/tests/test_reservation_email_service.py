@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.core import mail
-from django.test import TestCase, Client
-from hotels.forms import ReservationForm
-from hotels.models import Hotel, Room, Reservation
+from django.test import TestCase
 
 class ReservationEmailTest(TestCase):
 

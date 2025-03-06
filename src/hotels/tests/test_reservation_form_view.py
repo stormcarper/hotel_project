@@ -52,10 +52,15 @@ class ReservationFormViewTest(TestCase):
             'country': 'US'
         }
 
+    # test valid form
+    # test if reservation is created with the correct data.
     def test_reservation_form_valid(self):
         form = ReservationForm(data=self.form_data)
         self.assertTrue(form.is_valid())
         form.save()
+        #check if correct template is used
+        response = self.client.get(f'/reservation/finish/{self.hotel1.hotel_id}')
+        self.assertTemplateUsed(response, 'reservation.html')
         # check if reservation is succesfully created
         reservation = Reservation.objects.all()
         self.assertEqual(len(reservation), 1)
@@ -70,7 +75,6 @@ class ReservationFormViewTest(TestCase):
         self.assertEqual(reservation[0].address, self.form_data['address'])
         self.assertEqual(reservation[0].zip, self.form_data['zip'])
         self.assertEqual(reservation[0].country, self.form_data['country'])
-        
 
     # test empty form
     def test_reservation_form_empty(self):

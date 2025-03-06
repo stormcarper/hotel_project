@@ -134,9 +134,9 @@ class ReservationFormView(CreateView):
             'last_name': last_name
         })
     
-def get_rooms_and_hotel(request, pk, Rpk):
+def get_room_and_hotel(request, pk, Rpk):
     if Hotel.objects.filter(hotel_id=pk).count() == 0:
-        return JsonResponse({"error": "Hotel not found"}, status=404)
+        return render(request, '404.html', {'error_message': 'Hotel not found'})
     hotel = Hotel.objects.get(hotel_id=pk)
     room = Room.objects.filter(room_id=Rpk).first()
     # check if room exists
