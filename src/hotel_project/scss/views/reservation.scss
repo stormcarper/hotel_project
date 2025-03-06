@@ -52,17 +52,31 @@
         display: block;
       }
       
-      input, select {
+      input:not([type="checkbox"]), select {
         width: 100%;
         padding: 10px;
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 1rem;
-        
+
         &:focus {
           outline: none;
           border-color: #04a5bb;
           box-shadow: 0 0 0 2px rgba(4, 165, 187, 0.2);
+        }
+      }
+      
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        
+        input[type="checkbox"] {
+          margin-right: 8px;
+        }
+        
+        label {
+          display: inline;
+          margin: 0;
         }
       }
       
