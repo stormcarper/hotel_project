@@ -23,9 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('hotel-page__button').addEventListener('click', function() {
             let room = document.querySelector('.hotel-page__input');
             let price = room.value;
-            let room_id = room.options[room.selectedIndex].getAttribute('room_id');
-            console.log(room_id);
-            console.log(price);
+            let roomId = room.options[room.selectedIndex].getAttribute('roomId');
             let alert = document.querySelector('.hotel-page__alert');
             let hotel = window.location.pathname.split('/')[2];
             if (!price) {
@@ -34,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             } else {
                 alert.style.display = 'none';
-                window.location.href = `/reservation/date/${hotel}/${room_id}`;
+                window.location.href = `/reservation/date/${hotel}/${roomId}`;
             }
 
         });

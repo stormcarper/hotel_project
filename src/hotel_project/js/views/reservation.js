@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
         
 
         // assign the data to variables
-        room = data.room;
-        checkIn = data.checkIn;
-        checkOut = data.checkOut;
-        price = 0;
+        const room = data.room;
+        const checkIn = data.checkIn;
+        const checkOut = data.checkOut;
+        const price = 0;
 
         if (document.getElementsByTagName('form').length > 0) {
             // fetch the hotel and room data

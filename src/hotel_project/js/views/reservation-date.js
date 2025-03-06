@@ -5,18 +5,17 @@ document.addEventListener('DOMContentLoaded', function () {
     if (this.location.pathname.includes('reservation/date')) {
         // get the room_id form the url
         const room = this.location.pathname.split('/')[4];
+        const startDate = document.getElementById('start_date')
+        const endDate = document.getElementById('end_date')
 
-        const start_date = document.getElementById('start_date')
-        const end_date = document.getElementById('end_date')
-
-        flatpickr(start_date, {
+        flatpickr(startDate, {
             inline: true,
             dateFormat: "Y-m-d",
             minDate: "today",
             maxDate: new Date().fp_incr(1095)
         });
 
-        flatpickr(end_date, {
+        flatpickr(endDate, {
             inline: true,
             dateFormat: "Y-m-d",
             minDate: "today",
@@ -28,12 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let checkIn = document.getElementById('start_date').value;
             let checkOut = document.getElementById('end_date').value;
 
-            console.log(checkIn);
-            console.log(checkOut);
             //get hotel url from the current page
             let url = window.location.href;
             let hotel = url.split('/')[5];
-            console.log(hotel);
 
             // check for empty fields
             if (!room || !checkIn || !checkOut) {
